@@ -1,13 +1,33 @@
 package ru.netology.delivery.test;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.Keys;
 import ru.netology.delivery.data.DataGenerator;
 
-import static com.codeborne.selenide.Selenide.open;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Selenide.*;
+
 
 class DeliveryTest {
+    SelenideElement city = $("[data-test-id = 'city'] input");
+    SelenideElement date = $("[data-test-id = 'date'] input");
+    SelenideElement phone = $("[data-test-id = 'phone'] input");
+    SelenideElement name = $("[data-test-id = 'name'] input");
+    SelenideElement checkbox = $("[data-test-id = 'agreement']");
+    SelenideElement scheduleButton = $(".button__text");
+    SelenideElement rescheduleButton = $("[data-test-id = 'replan-notification'] .notification__content button");
+    SelenideElement successPopUp = $("[data-test-id = 'success-notification'] .notification__content");
+    SelenideElement reschedulePopUp = $("[data-test-id = 'replan-notification'] .notification__content");
+
+    String successMessage = "Встреча успешно запланирована на ";
+    String warningMessage = "У вас уже запланирована встреча на другую дату. Перепланировать?";
+
 
     @BeforeEach
     void setup() {
@@ -27,5 +47,29 @@ class DeliveryTest {
         // firstMeetingDate и secondMeetingDate. Можно также вызывать методы generateCity(locale),
         // generateName(locale), generatePhone(locale) для генерации и получения в тесте соответственно города,
         // имени и номера телефона без создания пользователя в методе generateUser(String locale) в датагенераторе
+
+
+        city.setValue(validUser.getCity());
+        date.sendKeys(Keys.chord(Keys.CONTROL,"a"), Keys.BACK_SPACE);
+        date.setValue(firstMeetingDate);
+        name.setValue(validUser.getName());
+        phone.setValue(validUser.getPhone());
+        checkbox.click();
+        scheduleButton.click();
+        successPopUp
+                .shouldBe(appear, Duration.ofSeconds(15))
+                .shouldHave(Condition.text(successMessage + firstMeetingDate));
+
+        date.sendKeys(Keys.chord(Keys.CONTROL,"a"), Keys.BACK_SPACE);
+        date.setValue(secondMeetingDate);
+        scheduleButton.click();
+        reschedulePopUp
+                .shouldBe(appear, Duration.ofSeconds(15))
+                .shouldHave(Condition.text(warningMessage));
+        rescheduleButton.click();
+        successPopUp
+                .shouldBe(appear, Duration.ofSeconds(15))
+                .shouldHave(Condition.text(successMessage + secondMeetingDate));
+
     }
 }
