@@ -10,7 +10,7 @@ import ru.netology.delivery.data.DataGenerator;
 
 import java.time.Duration;
 
-import static com.codeborne.selenide.Condition.appear;
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 
 
@@ -57,18 +57,18 @@ class DeliveryTest {
         checkbox.click();
         scheduleButton.click();
         successPopUp
-                .shouldBe(appear, Duration.ofSeconds(15))
+                .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.text(successMessage + firstMeetingDate));
 
         date.sendKeys(Keys.chord(Keys.CONTROL,"a"), Keys.BACK_SPACE);
         date.setValue(secondMeetingDate);
         scheduleButton.click();
         reschedulePopUp
-                .shouldBe(appear, Duration.ofSeconds(15))
+                .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.text(warningMessage));
         rescheduleButton.click();
         successPopUp
-                .shouldBe(appear, Duration.ofSeconds(15))
+                .shouldBe(visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.text(successMessage + secondMeetingDate));
 
     }
