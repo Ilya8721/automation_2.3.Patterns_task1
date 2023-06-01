@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/c7xa0ony37hhgbvu/branch/main?svg=true)](https://ci.appveyor.com/project/Ilya8721/automation-dz2-3-task1/branch/main)
+[![Build status](https://ci.appveyor.com/api/projects/status/4thmh5t27gubb171/branch/main?svg=true)](https://ci.appveyor.com/project/Ilya8721/automation-2-3-patterns-task1/branch/main)
 
 - время, затраченное на ручное тестирование (минут): 30;
 
